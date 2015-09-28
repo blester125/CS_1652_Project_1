@@ -2,7 +2,7 @@
 
 The first project for CS 1652 at the University of Pittsburgh. By Brian Lester and Carmen Condeluci.
 This is the implementation using standard unix system calls. For the version using minet functions 
-please click (here) [https://github.com/blester125/CS_1652_Project_1_Minet]
+please click [here](https://github.com/blester125/CS_1652_Project_1_Minet)
 
 ###The http_client
 ## 
