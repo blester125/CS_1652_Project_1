@@ -23,9 +23,6 @@
 #define FILENAMESIZE 100
 #define MAXCONNECTIONS 32
 
-#include <iostream>
-#define debug(msg) (std::cout << msg << std::endl)
-
 int handle_connection(int sock);
 int parse_file(const char * request, char * filename, int len);
 
@@ -43,29 +40,29 @@ int main(int argc, char * argv[]) {
 
   /* parse command line args */
   if (argc != 3) {
-	fprintf(stderr, "usage: http_server1 k|u port\n");
+    fprintf(stderr, "usage: http_server1 k|u port\n");
     exit(-1);
   }
 
   server_port = atoi(argv[2]);
 
   if (server_port < 1500) {
-	fprintf(stderr, "INVALID PORT NUMBER: %d; can't be < 1500\n", server_port);
-	exit(-1);
+    fprintf(stderr, "INVALID PORT NUMBER: %d; can't be < 1500\n", server_port);
+    exit(-1);
   }
 
   /* initialize */
   if (toupper(*(argv[1])) == 'K') { 
-	/* UNCOMMENT FOR MINET 
-	 * minet_init(MINET_KERNEL);
-         */
+    /* UNCOMMENT FOR MINET 
+     * minet_init(MINET_KERNEL);
+     */
   } else if (toupper(*(argv[1])) == 'U') { 
-	/* UNCOMMENT FOR MINET 
-	 * minet_init(MINET_USER);
-	 */
+    /* UNCOMMENT FOR MINET 
+	   * minet_init(MINET_USER);
+	   */
   } else {
-	  fprintf(stderr, "First argument must be k or u\n");
-	  exit(-1);
+    fprintf(stderr, "First argument must be k or u\n");
+    exit(-1);
   }
   /* initialize and make socket */
   listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -92,8 +89,8 @@ int main(int argc, char * argv[]) {
   }
   /* connection handling loop: wait to accept connection */
   while ((servSocket = accept(listenSocket, NULL, NULL)) >= 0) {
-	  /* handle connections */
-	  rc = handle_connection(servSocket);
+    /* handle connections */
+    rc = handle_connection(servSocket);
     if (rc < 0) {
       fprintf(stderr, "Error handling connection\n");
     }
@@ -122,11 +119,11 @@ int handle_connection(int sock) {
 
   const char * notok_response = "HTTP/1.0 404 FILE NOT FOUND\r\n"	\
     "Content-Type: text/html\r\n\r\n"			\
-	  "<html><body bgColor=black text=white>\n"		\
-	  "<h2>404 FILE NOT FOUND</h2>\n" \
-	  "</body></html>\n";
+    "<html><body bgColor=black text=white>\n"		\
+    "<h2>404 FILE NOT FOUND</h2>\n" \
+    "</body></html>\n";
   /* first read loop -- get request and headers*/
-	// Read the Headers.
+  // Read the Headers.
   bytes_read = recv(sock, recvbuf, BUFSIZE - 1, 0);
   if (bytes_read <= 0) {
     fprintf(stderr, "Error reading request.\n");
@@ -152,7 +149,7 @@ int handle_connection(int sock) {
     ok = false;
   }
   if (!strcmp(filename, "")) {
-  	strcpy(filename, "index.html");
+    strcpy(filename, "index.html");
   }
   /* try opening the file */
   FILE * reqfile = fopen(filename, "rb");
@@ -173,16 +170,16 @@ int handle_connection(int sock) {
   }
   /* send response */
   if (ok) {
-	  /* send headers */
-	  // Create response with the content length.
+    /* send headers */ 
+    // Create response with the content length.
     sprintf(ok_response, ok_response_f, file_string.size());
     // Add the response and thcontent into a string
     file_string = std::string(ok_response) + file_string;
     // Send the string over the socket
     sending = send(sock, file_string.c_str(), file_string.size(), 0);
     if (sending <= 0) {
-    	fprintf(stderr, "Error sending file");
-    	ok = false;
+      fprintf(stderr, "Error sending file");
+      ok = false;
     }
   } else {
     //send error response
@@ -194,9 +191,9 @@ int handle_connection(int sock) {
   }
   /* close socket and free space */
   if (ok) {
-	  return 0;
+    return 0;
   } else {
-	  return -1;
+    return -1;
   }
 }
 

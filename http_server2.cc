@@ -34,29 +34,29 @@ int main(int argc, char * argv[]) {
 
   /* parse command line args */
   if (argc != 3) {
-	  fprintf(stderr, "usage: http_server1 k|u port\n");
-	  exit(-1);
+    fprintf(stderr, "usage: http_server1 k|u port\n");
+    exit(-1);
   }
 
   server_port = atoi(argv[2]);
 
   if (server_port < 1500) {
-	  fprintf(stderr, "INVALID PORT NUMBER: %d; can't be < 1500\n", server_port);
-	  exit(-1);
+    fprintf(stderr, "INVALID PORT NUMBER: %d; can't be < 1500\n", server_port);
+    exit(-1);
   }
     
   /* initialize */
   if (toupper(*(argv[1])) == 'K') { 
 	  /* UNCOMMENT FOR MINET 
 	  * minet_init(MINET_KERNEL);
-         */
+    */
   } else if (toupper(*(argv[1])) == 'U') { 
 	  /* UNCOMMENT FOR MINET 
 	  * minet_init(MINET_USER);
-	   */
+	  */
   } else {
-	  fprintf(stderr, "First argument must be k or u\n");
-	  exit(-1);
+    fprintf(stderr, "First argument must be k or u\n");
+    exit(-1);
   }
 
   /* initialize and make socket */
@@ -74,14 +74,14 @@ int main(int argc, char * argv[]) {
   /* bind listening socket */
   int bind_error = bind(acceptSocket, (struct sockaddr *)&saddr, sizeof(saddr));
   if (bind_error < 0) {
-  	fprintf(stderr, "Error binding the socket.\n");
-  	exit(-1);
+    fprintf(stderr, "Error binding the socket.\n");
+    exit(-1);
   }
   /* start listening */
   int listening = listen(acceptSocket, MAXCONNECTIONS);
   if (listening < 0) {
-  	fprintf(stderr, "Error listening.\n");
-  	exit(-1);
+    fprintf(stderr, "Error listening.\n");
+    exit(-1);
   }
   /* connection handling loop: wait to accept connection */
   fd_set full;
@@ -95,11 +95,11 @@ int main(int argc, char * argv[]) {
   // The largest file descriptor
   int max_sock = acceptSocket;
   while (1) {
-	  /* create read list */
-	  connected = full;
-	  /* do a select */
-	  int result = select(max_sock+1, &connected, 0, 0, 0);
-	  if (result > 0) {
+    /* create read list */
+    connected = full;
+    /* do a select */
+    int result = select(max_sock+1, &connected, 0, 0, 0);
+    if (result > 0) {
 	    /* process sockets that are ready */
       for (int i = 0; i < max_sock + 1; i++) {
       	// Check if bit for file discriptor is set in the connected list
